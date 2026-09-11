@@ -1,0 +1,6 @@
+/target
+/cards
+Cargo.lock
+config.json
+history_command.txt
+stat.jsonl

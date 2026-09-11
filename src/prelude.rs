@@ -1,0 +1,41 @@
+pub use std::cell::RefCell;
+pub use std::fs;
+pub use std::pin::Pin;
+pub use std::sync::LazyLock;
+pub use std::time::Duration;
+pub use std::time::Instant;
+pub use std::{collections::HashMap, error::Error};
+pub use std::{fmt::Display, path::PathBuf};
+
+pub use clap::*;
+pub use rand::*;
+pub use reqwest::{Client, ClientBuilder};
+pub use serde::{Deserialize, Serialize};
+pub use serde_json::{Value, from_value, to_value};
+pub use serde_json5::from_reader;
+pub use serde_json5::{from_str, to_string};
+pub use serde_with::{DurationMilliSeconds, serde_as};
+
+pub use crate::aggr::*;
+pub use crate::cli::cards::cards_sub::*;
+pub use crate::cli::cards::change::*;
+pub use crate::cli::cards::create_mode::*;
+pub use crate::cli::cli::*;
+pub use crate::cli::reedline::*;
+pub use crate::cli::run::*;
+pub use crate::logic::cards::cards_sub::*;
+pub use crate::logic::cards::change::*;
+pub use crate::logic::cards::create_mode::*;
+pub use crate::logic::logic::*;
+pub use crate::logic::run::*;
+pub use crate::reqwests::client::*;
+pub use crate::reqwests::clients::groq::*;
+pub use crate::reqwests::gw_clients::*;
+pub use crate::reqwests::promts::*;
+pub use crate::structures::cards::*;
+pub use crate::structures::config::*;
+pub use crate::structures::session::*;
+pub use crate::structures::stat_stat::*;
+pub use crate::utils::*;
+
+pub type RResult<T> = Result<T, Box<dyn Error>>;
