@@ -11,9 +11,11 @@ impl Display for SessionStat {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "points: {}\ntime ms: {}\n, info_data: {}",
+            "points: {}\ntime ms: {}\ntime sec: {}\ntime min: {:.4}\ninfo_data: {}",
             self.points,
             self.time_ms.as_millis(),
+            self.time_ms.as_secs(),
+            self.time_ms.as_secs_f64() / 60.,
             self.info_data
         )?;
         Ok(())

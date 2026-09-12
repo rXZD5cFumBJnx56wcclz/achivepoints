@@ -5,11 +5,17 @@ pub struct Card {
     pub key: String,
     pub ask: String,
     pub answer: String,
+    pub explanation: String,
 }
 
 impl Card {
-    pub fn new(key: String, ask: String, answer: String) -> Self {
-        Self { key, ask, answer }
+    pub fn new(key: String, ask: String, answer: String, explanation: String) -> Self {
+        Self {
+            key,
+            ask,
+            answer,
+            explanation,
+        }
     }
 }
 
@@ -19,6 +25,7 @@ impl Default for Card {
             key: "Theme".to_string(),
             ask: "Ask".to_string(),
             answer: "Answer".to_string(),
+            explanation: "Explanation".to_string(),
         }
     }
 }
@@ -27,8 +34,8 @@ impl Display for Card {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "key: {}\n\nask: {}\n\nanswer: {}",
-            &self.key, &self.ask, &self.answer
+            "key: {}\n\nask: {}\n\nanswer: {}\n\nexplanation: {}",
+            &self.key, &self.ask, &self.answer, &self.explanation
         )?;
         Ok(())
     }
@@ -40,6 +47,7 @@ pub struct InfoData {
     pub name: String,
     pub path: PathBuf,
     pub count_elements: usize,
+    pub last_pkg_version: String,
 }
 
 impl InfoData {
@@ -49,6 +57,7 @@ impl InfoData {
             name,
             path,
             count_elements: 0,
+            last_pkg_version: env!("CARGO_PKG_VERSION").to_string()
         }
     }
 }
@@ -57,9 +66,10 @@ impl Display for InfoData {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "version: {}\ncount elements: {}\n name: {}\npath: {}",
+            "version: {}\ncount elements: {}\nlast pkg version: {}\nname: {}\npath: {}",
             self.version,
             self.count_elements,
+            self.last_pkg_version,
             self.name,
             self.path.clone().into_string().unwrap()
         )?;
@@ -77,6 +87,10 @@ impl Cards {
     pub fn from_json(path: &PathBuf) -> RResult<Self> {
         let f = fs::read_to_string(path)?;
         Ok(serde_json5::from_str(&f)?)
+    }
+
+    pub fn new_from(info: InfoData) -> Self {
+        Self { info: info, cards: HashMap::new() }
     }
 
     pub fn write_json(&self) -> RResult<()> {

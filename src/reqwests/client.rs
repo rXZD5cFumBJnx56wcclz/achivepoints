@@ -19,13 +19,17 @@ pub static JSON_SCHEMA: LazyLock<serde_json::Value> = LazyLock::new(|| {
                 },
                 "answer": {
                     "type": "string"
+                },
+                "explanation": {
+                    "type": "string"
                 }
             },
 
             "required": [
                 "key",
                 "ask",
-                "answer"
+                "answer",
+                "explanation"
             ],
 
             "additionalProperties": false

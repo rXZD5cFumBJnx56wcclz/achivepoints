@@ -26,6 +26,8 @@ pub struct CardsCreate {
     pub ask: String,
     #[arg(short = 'a', long, default_value = "")]
     pub answer: String,
+    #[arg(short = 'e', long, default_value = "")]
+    pub explanation: String,
     #[arg(short, long, default_value = "1")]
     pub qty: usize,
     #[arg(long)]
@@ -56,6 +58,7 @@ impl Default for CardsCreate {
             key: "Theme".to_string(),
             type_promt_system: "all".to_string(),
             response_type: "variant".to_string(),
+            explanation: "Explanation".to_string(),
         }
     }
 }

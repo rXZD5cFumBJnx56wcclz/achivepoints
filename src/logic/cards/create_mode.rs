@@ -27,6 +27,7 @@ impl<'a> LogicCardsCreateMode<'a> {
                     self.args_state.key.clone(),
                     self.args_state.ask.clone(),
                     self.args_state.answer.clone(),
+                    self.args_state.explanation.clone(),
                 ),
                 k => {
                     let v = &self.clients.0[k];

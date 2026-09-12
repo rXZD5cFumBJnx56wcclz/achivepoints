@@ -1,6 +1,6 @@
 use crate::prelude::*;
 
-#[derive(Parser)]
+#[derive(Parser, Debug)]
 pub struct RunCli {
     pub answer: Option<String>,
     #[command(subcommand)]
@@ -10,7 +10,7 @@ pub struct RunCli {
 // #[arg(long, default_value = "eq")]
 //     pub comparison_answers: String,
 
-#[derive(Subcommand)]
+#[derive(Subcommand, Debug)]
 pub enum RunSub {
     #[command(alias = "e")]
     Exit,
