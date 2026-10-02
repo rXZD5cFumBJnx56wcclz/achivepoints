@@ -12,16 +12,16 @@ pub static JSON_SCHEMA: LazyLock<serde_json::Value> = LazyLock::new(|| {
 
             "properties": {
                 "key": {
-                    "type": "string"
+                    "type": ["string", "null"]
                 },
                 "ask": {
-                    "type": "string"
+                    "type": ["string", "null"]
                 },
                 "answer": {
-                    "type": "string"
+                    "type": ["string", "null"]
                 },
                 "explanation": {
-                    "type": "string"
+                    "type": ["string", "null"]
                 }
             },
 
@@ -39,7 +39,7 @@ pub static JSON_SCHEMA: LazyLock<serde_json::Value> = LazyLock::new(|| {
 
 #[derive(Deserialize, Serialize)]
 pub struct WrapResponse {
-    pub content: Card,
+    pub content: CardPatch,
     pub tokens_used: u64,
     pub tokens_left: u64,
     pub code: String,

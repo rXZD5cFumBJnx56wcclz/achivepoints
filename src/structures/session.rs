@@ -1,3 +1,5 @@
+use std::{fs::{File, OpenOptions}, io::{BufReader, BufRead, Write}};
+
 use crate::prelude::*;
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -24,8 +26,32 @@ impl Display for SessionStat {
 
 impl SessionStat {
     pub fn push_file(&self) -> Result<(), Box<dyn Error>> {
-        fs::write("stat.jsonl", to_string(self)?)?;
+        let mut file = OpenOptions::new().create(true).append(true).open("stat.jsonl")?;
+        serde_json::to_writer(&mut file, self)?;
+        file.write_all(b"\n")?;
+        file.flush()?;
         Ok(())
+    }
+
+    pub fn from_file() -> RResult<Vec<SessionStat>> {
+        let file = File::open("stat.jsonl")?;
+        let reader = BufReader::new(file);
+
+        let mut stat = Vec::new();
+
+        for line in reader.lines() {
+            let line = line?;
+            if line.trim().is_empty() {
+                continue; // пропускаем пустые строки
+            }
+
+            let card: Self = serde_json::from_str(&line)
+                .map_err(|e| std::io::Error::new(std::io::ErrorKind::InvalidData, e))?;
+            
+            stat.push(card);
+        }
+
+        Ok(stat)
     }
 }
 
@@ -48,5 +74,15 @@ impl SessionRuntime {
             time_ms: self.time.elapsed(),
             info_data: info_data,
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn from_file_res_1() {
+        let _ = SessionStat::from_file().unwrap();
     }
 }

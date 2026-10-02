@@ -96,8 +96,8 @@ mod tests {
             .await
             .unwrap()
             .content;
-        assert!(!v.key.is_empty());
-        assert!(!v.ask.is_empty());
-        assert!(!v.answer.is_empty());
+        assert!(!v.key.unwrap().is_empty());
+        assert!(!v.ask.unwrap().is_empty());
+        assert!(!v.answer.unwrap().is_empty());
     }
 }

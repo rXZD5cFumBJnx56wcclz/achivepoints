@@ -1,4 +1,5 @@
 use crate::prelude::*;
+use struct_patch::Patch;
 
 #[derive(Parser)]
 pub struct CardsCreateModeCli {
@@ -17,32 +18,33 @@ pub enum CardsCreateMode {
     // repeat
     #[command(alias = "r")]
     Repeat,
-    Create(CardsCreate),
+    Create(CardsCreatePatch),
 }
 
-#[derive(Args, Clone)]
+#[derive(Args, Clone, Debug, Patch, PartialEq)]
+#[patch(attribute(derive(Debug, Default, Args, Clone)))]
 pub struct CardsCreate {
-    #[arg(short = 's', long, default_value = "")]
-    pub ask: String,
-    #[arg(short = 'a', long, default_value = "")]
-    pub answer: String,
-    #[arg(short = 'e', long, default_value = "")]
-    pub explanation: String,
-    #[arg(short, long, default_value = "1")]
-    pub qty: usize,
-    #[arg(long)]
-    pub qty_sep: bool,
-    // type: manualy
-    #[arg(short, long, default_value = "manualy")]
-    pub r#type: String,
-    #[arg(short, long)]
-    pub uncheck: bool,
-    #[arg(short, long, default_value = "")]
+    #[patch(attribute(arg(short, long,)))]
     pub key: String,
-    #[arg(long, default_value = "all")]
+    #[patch(attribute(arg(short = 's', long,)))]
+    pub ask: String,
+    #[patch(attribute(arg(short = 'a', long,)))]
+    pub answer: String,
+    #[patch(attribute(arg(short = 'e', long,)))]
+    pub explanation: String,
+    // type: manualy
+    #[patch(attribute(arg(short, long,)))]
+    pub r#type: String,
+    #[patch(attribute(arg(short, long)))]
+    pub dont_save: bool,
+    #[patch(attribute(arg(short, long,)))]
+    pub qty: usize,
+    #[patch(attribute(arg(long)))]
+    pub qty_add: bool,
+    #[patch(attribute(arg(long,)))]
     pub type_promt_system: String,
     // variant, text,
-    #[arg(long, default_value = "variant")]
+    #[patch(attribute(arg(long,)))]
     pub response_type: String,
 }
 
@@ -52,10 +54,10 @@ impl Default for CardsCreate {
             ask: "Ask".to_string(),
             answer: "Answer".to_string(),
             qty: 1,
-            qty_sep: false,
+            qty_add: false,
             r#type: "manualy".to_string(),
-            uncheck: false,
             key: "Theme".to_string(),
+            dont_save: false,
             type_promt_system: "all".to_string(),
             response_type: "variant".to_string(),
             explanation: "Explanation".to_string(),

@@ -1,6 +1,8 @@
 use crate::prelude::*;
+use struct_patch::Patch;
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Patch)]
+#[patch(attribute(derive(Default, Debug, Deserialize, Serialize, Clone)))]
 pub struct Card {
     pub key: String,
     pub ask: String,
@@ -57,7 +59,7 @@ impl InfoData {
             name,
             path,
             count_elements: 0,
-            last_pkg_version: env!("CARGO_PKG_VERSION").to_string()
+            last_pkg_version: env!("CARGO_PKG_VERSION").to_string(),
         }
     }
 }
@@ -90,7 +92,10 @@ impl Cards {
     }
 
     pub fn new_from(info: InfoData) -> Self {
-        Self { info: info, cards: HashMap::new() }
+        Self {
+            info: info,
+            cards: HashMap::new(),
+        }
     }
 
     pub fn write_json(&self) -> RResult<()> {

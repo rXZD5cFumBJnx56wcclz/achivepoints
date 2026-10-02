@@ -14,6 +14,8 @@ serde_with = "3"
 reqwest = {version = "0.12", features = ["json"]}
 shell-words = "1"
 reedline = "0.40"
+struct-patch = "0.14.4"
+structdiff = "0.7.3"
 
 [dev-dependencies]
 pretty_assertions = "1"

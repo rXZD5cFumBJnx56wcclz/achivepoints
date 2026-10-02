@@ -22,8 +22,12 @@ impl<'a> LogicRun<'a> {
         cards_vec.choose(&mut rng())
     }
 
-    fn cli_impl(session: &mut SessionRuntime, answer_user: String, card: &&Card) {
-        if &card.answer == &answer_user {
+    fn eq(answer_user: String, card: &&Card) -> bool {
+        &card.answer == &answer_user
+    }
+
+    fn cli_impl(eq: bool, session: &mut SessionRuntime, card: &&Card) {
+        if eq {
             println!("right");
             print!("+");
             session.points += 1;
@@ -43,19 +47,22 @@ impl<'a> LogicRun<'a> {
                 println!("next card:");
                 println!("{key}\n\n{}", card.ask);
                 let cli = get_cli_cycle::<RunCli>(true).await?;
-                if let Some(answer_user) = cli.answer {
-                    println!("response accepted:\n");
-                    Self::cli_impl(&mut self.session, answer_user, card);
-                }
+                if cli.c.is_none() {
+                    
+                } 
                 if let Some(command) = cli.c {
                     match command {
                         RunSub::Exit => break,
                     }
+                } else {
+                    let eq = if let Some(answer_user) = cli.answer {
+                        Self::eq(answer_user, card)
+                    } else {false};
+                    println!("response accepted:\n");
+                    Self::cli_impl(eq, &mut self.session, card);
                 }
             }
-            let session_stat = self.session
-                .clone()
-                .to_stat(self.cards.info.clone());
+            let session_stat = self.session.clone().to_stat(self.cards.info.clone());
             println!("{session_stat}");
             session_stat.push_file()?;
             Ok(())
@@ -78,7 +85,7 @@ mod test {
             "answer".to_string(),
             "explanation".to_string(),
         );
-        LogicRun::cli_impl(&mut session, answer, &&card);
+        LogicRun::cli_impl(LogicRun::eq(answer, &&card), &mut session, &&card);
         assert_eq_pr!(session.points, 1);
     }
 }
