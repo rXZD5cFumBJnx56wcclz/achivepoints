@@ -47,9 +47,7 @@ impl<'a> LogicRun<'a> {
                 println!("next card:");
                 println!("{key}\n\n{}", card.ask);
                 let cli = get_cli_cycle::<RunCli>(true).await?;
-                if cli.c.is_none() {
-                    
-                } 
+                if cli.c.is_none() {}
                 if let Some(command) = cli.c {
                     match command {
                         RunSub::Exit => break,
@@ -57,7 +55,9 @@ impl<'a> LogicRun<'a> {
                 } else {
                     let eq = if let Some(answer_user) = cli.answer {
                         Self::eq(answer_user, card)
-                    } else {false};
+                    } else {
+                        false
+                    };
                     println!("response accepted:\n");
                     Self::cli_impl(eq, &mut self.session, card);
                 }

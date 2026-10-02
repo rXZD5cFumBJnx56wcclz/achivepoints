@@ -16,5 +16,8 @@ pub enum CardsSub {
         #[arg(long, short)]
         key: String,
     },
-    // Import,
+    New {
+        #[arg(long, short)]
+        key: String,
+    }, // Import,
 }

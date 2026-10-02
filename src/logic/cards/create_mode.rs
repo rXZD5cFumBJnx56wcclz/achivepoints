@@ -20,7 +20,7 @@ pub struct LogicCardsCreateMode<'a> {
 // input args_patch
 // args_use = args_patch
 // args_use -> card_use
-// 
+//
 
 impl Display for LogicCardsCreateMode<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {

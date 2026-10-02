@@ -36,6 +36,12 @@ impl<'a> LogicCards<'a> {
                 CardsSub::Remove { key } => {
                     self.cards_map.remove(key);
                 }
+                CardsSub::New { key } => {
+                    Cards::new_from(InfoData::new(
+                            key.clone(),
+                            format!("cards/{key}.json").into(),
+                        )).write_json()?;
+                }
             }
             Ok(())
         }

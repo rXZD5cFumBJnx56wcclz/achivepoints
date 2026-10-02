@@ -1,4 +1,7 @@
-use std::{fs::{File, OpenOptions}, io::{BufReader, BufRead, Write}};
+use std::{
+    fs::{File, OpenOptions},
+    io::{BufRead, BufReader, Write},
+};
 
 use crate::prelude::*;
 
@@ -26,7 +29,10 @@ impl Display for SessionStat {
 
 impl SessionStat {
     pub fn push_file(&self) -> Result<(), Box<dyn Error>> {
-        let mut file = OpenOptions::new().create(true).append(true).open("stat.jsonl")?;
+        let mut file = OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open("stat.jsonl")?;
         serde_json::to_writer(&mut file, self)?;
         file.write_all(b"\n")?;
         file.flush()?;
@@ -47,7 +53,7 @@ impl SessionStat {
 
             let card: Self = serde_json::from_str(&line)
                 .map_err(|e| std::io::Error::new(std::io::ErrorKind::InvalidData, e))?;
-            
+
             stat.push(card);
         }
 
