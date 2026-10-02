@@ -81,10 +81,10 @@ impl<'a> LogicCardsCreateMode<'a> {
     }
 
     fn cycle_runner(&mut self) {
-        if self.args.qty_add {
-            self.limit += self.args.qty;
+        if self.args_use.qty_add {
+            self.limit += self.args_use.qty;
         } else {
-            self.limit = self.args.qty;
+            self.limit = self.args_use.qty;
         }
     }
 
@@ -92,6 +92,9 @@ impl<'a> LogicCardsCreateMode<'a> {
         self.args_use = self.args.clone();
         self.args_use.apply(self.args_patch.clone());
         self.args_patch = Default::default();
+    }
+
+    fn args_update(&mut self) {
         if self.args_use.dont_save {
             return;
         }
@@ -142,6 +145,7 @@ impl<'a> LogicCardsCreateMode<'a> {
                 let card_patch = self.get_card_patch().await?;
                 self.card_assign(card_patch);
                 self.cycle_runner();
+                self.args_update();
                 println!("{}", self);
                 let cli = get_cli_cycle::<CardsCreateModeCli>(true).await?;
                 match cli.c {

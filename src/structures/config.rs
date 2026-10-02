@@ -3,7 +3,6 @@ use crate::prelude::*;
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(default)]
 pub struct ConfigFile {
-    pub cards: HashMap<String, PathBuf>,
     pub api: Api,
 }
 

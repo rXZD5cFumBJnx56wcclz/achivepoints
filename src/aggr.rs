@@ -26,11 +26,12 @@ impl<'a> AggrDyn<'a> {
     pub fn new(aggrst: &'a AggrStatic, clients_map: &ClientsMap) -> RResult<Self> {
         Ok(Self {
             clients: Clients::new(&aggrst.client, &aggrst.config, clients_map),
-            cards_map: aggrst
-                .config
-                .cards
+            cards_map: get_cards_paths()?
                 .iter()
-                .map(|(k, path)| Ok((k.clone(), Cards::from_json(path)?)))
+                .map(|v| {
+                    let cards = Cards::from_json(v)?;
+                    Ok((cards.info.name.clone(), cards))
+                })
                 .collect::<RResult<_>>()?,
         })
     }
